@@ -4,7 +4,15 @@
 # Author: Jerome Wynne
 # Summary: a function for computing monthly net pay over one financial year.
 
-def yearly_summary(gross_annual_salary:float, to_pension:float):
+def monthly_summary(gross_annual_salary: float, to_pension: float):
+
+    # compute cumulative salary by month
+    gross_monthly_salary = gross_annual_salary/12.
+    cum_gross_salary = [n*gross_monthly_salary for n in range(1, 13)]
+    [income_tax(c) for c in cum_gross_salary]
+    pass
+
+def yearly_summary(gross_annual_salary: float, to_pension: float):
 
     ni = ni_contribution(gross_annual_salary)
     plan2 = plan_2_contribution(gross_annual_salary)
@@ -57,12 +65,12 @@ def pension_contribution(gross_annual_salary: float,
 
 def plan_2_contribution(gross_annual_salary: float):
     # ref: https://www.gov.uk/repaying-your-student-loan/what-you-pay
-    annual_threshold = 2214.*12
-    plan_2_rate = 0.09
-    return(max(0., gross_annual_salary - annual_threshold)*plan_2_rate)
+    plan_2_bands = [(0, 2214.*12, 0.),
+                    (2214.*12, float('inf'), 0.09)]
+    return(marginal_tax(gross_annual_salary, plan_2_bands))
 
 def postgraduate_contribution(gross_annual_salary: float):
     # ref: https://www.gov.uk/repaying-your-student-loan/what-you-pay
-    annual_threshold = 1750.*12
-    postgraduate_rate = 0.06
-    return(max(0., gross_annual_salary - annual_threshold)*postgraduate_rate)
+    postgrad_bands = [(0, 1750.*12, 0.),
+                      (1750.*12, float('inf'), 0.06)]
+    return(marginal_tax(gross_annual_salary, postgrad_bands))
