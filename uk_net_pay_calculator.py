@@ -4,6 +4,7 @@
 # Author: Jerome Wynne
 # Summary: a function for computing monthly net pay over one financial year.
 # TODO:
+#   write tests
 
 from itertools import accumulate
 
